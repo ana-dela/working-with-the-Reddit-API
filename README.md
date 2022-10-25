@@ -8,5 +8,7 @@ Posts only stay on the main reddit and subreddit pages for a limited time. You c
 In this challenge, you'll practice the following:
 
 -Retrieving a list of trending posts on a particular subreddit
+
 -Exploring the comments on a single article
+
 -Posting your own comment on an article
