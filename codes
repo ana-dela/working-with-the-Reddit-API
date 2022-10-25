@@ -1,11 +1,14 @@
 #authontication with Reddit API
 headers={"Authorization": "bearer 13426216-4U1ckno9J5AiK72VRbpEeBaMSKk", "User-Agent": "Dataquest/1.0"}
 
+
 #get top posts for the past day
 python_top= requests.get( "https://oauth.reddit.com/r/python/top", headers=headers, params={'t':'day'}).json()
 
+
 #extract the list containing all the posts
 python_top_articles=python_top['data']['children']
+
 
 #find the post with the most upvote
 num_of_most_upvote=0
@@ -15,3 +18,26 @@ for article in python_top_articles:
     if num_of_upvote >num_of_most_upvote:
         num_of_most_upvote = num_of_upvote
         most_upvoted= article['data']['id']
+        
+        
+#most_upvoted = '4b7w9u'
+#Get all of the comments on the /r/python subreddit's top post from the past day
+comments = requests.get("https://oauth.reddit.com/r/python/comments/4b7w9u", headers=headers).json()
+
+
+#The first item in the list contains information about the post, and the second item contains information about the comments
+#Find the most upvoted top-level comment in comments
+comments_list=comments[1]["data"]["children"]
+most_upvoted_comment=''
+top_ups_num=0
+for comment in comments_list:
+    ups_num = comment['data']['ups']
+    if ups_num > top_ups_num:
+        top_ups_num = ups_num
+        most_upvoted_comment = comment['data']['id']
+
+
+#Make a POST request to the /api/vote endpoint to upvote the most upvoted comment
+payload = {"dir": 1, "id": "d16y4ry"}
+response = requests.post("https://oauth.reddit.com/api/vote", json=payload, headers=headers)
+status = response.status_code
