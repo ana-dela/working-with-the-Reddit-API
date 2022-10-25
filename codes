@@ -1,4 +1,17 @@
 #authontication with Reddit API
 headers={"Authorization": "bearer 13426216-4U1ckno9J5AiK72VRbpEeBaMSKk", "User-Agent": "Dataquest/1.0"}
+
 #get top posts for the past day
 python_top= requests.get( "https://oauth.reddit.com/r/python/top", headers=headers, params={'t':'day'}).json()
+
+#extract the list containing all the posts
+python_top_articles=python_top['data']['children']
+
+#find the post with the most upvote
+num_of_most_upvote=0
+most_upvoted=''
+for article in python_top_articles:
+    num_of_upvote = article['data']['ups']
+    if num_of_upvote >num_of_most_upvote:
+        num_of_most_upvote = num_of_upvote
+        most_upvoted= article['data']['id']
